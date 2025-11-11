@@ -12,10 +12,10 @@
 #include "daisy.h"
 
 
-#if __has_include("../DEV_Config.h")
-    #include "../DEV_Config.h"     // користувацький файл є - береж його
+#if __has_include("../Display_Config.h")
+    #include "../Display_Config.h"     // користувацький файл є - береж його
 #else
-    #include "DEV_Config_template.h"  // немає - береж шаблон
+    #include "Display_Config_template.h"  // немає - береж шаблон
 #endif
 
 using namespace daisy;
