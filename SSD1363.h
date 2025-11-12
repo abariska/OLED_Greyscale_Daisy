@@ -47,6 +47,7 @@ void OLED_WriteReg(UBYTE Reg);
 void OLED_WriteData(UBYTE Data);
 void OLED_Clear(void);
 void OLED_Reset(void);
+void Delay_ms(unsigned long xms);
 
 inline void OLED_WriteDataEnable()
 {
@@ -91,13 +92,6 @@ inline void OLED_DisplayOn()
 // U8g2
 inline void OLED_InitReg(void)
 {
-    // Hardware reset
-    Delay_ms(1);
-    pin_reset.Write(false);
-    Delay_ms(50);
-    pin_reset.Write(true);
-    Delay_ms(1);
-
     // 1. Unlock commands
     OLED_WriteReg(0xFD);  // REG_COMMAND_LOCK
     OLED_WriteData(0x12);
@@ -169,7 +163,6 @@ inline void OLED_InitReg(void)
     
     // 19. Display ON
     OLED_WriteReg(0xAF);  // REG_DISPLAY_ON
-    Delay_ms(10);
 }
 
 

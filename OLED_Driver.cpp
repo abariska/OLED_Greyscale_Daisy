@@ -108,8 +108,13 @@ inline void OLED_SetColumn(UWORD Xstart, UWORD Xend)
     if (cachedX1 == Xstart && cachedX2 == Xend) return;
 
     OLED_WriteReg(0x15);  // REG_SET_COLUMN
-    OLED_WriteData(static_cast<UBYTE>(RamColumn(Xstart)));   
-    OLED_WriteData(static_cast<UBYTE>(RamColumn(Xend - 1))); 
+    if (DisplayTraits::kSendCoordinatsAsAddress) {
+        OLED_WriteReg(static_cast<UBYTE>(RamColumn(Xstart)));   
+        OLED_WriteReg(static_cast<UBYTE>(RamColumn(Xend - 1))); 
+    } else {
+        OLED_WriteData(static_cast<UBYTE>(RamColumn(Xstart)));   
+        OLED_WriteData(static_cast<UBYTE>(RamColumn(Xend - 1))); 
+    }
     cachedX1 = Xstart;
     cachedX2 = Xend;
 }
@@ -119,9 +124,14 @@ inline void OLED_SetROW(UWORD Ystart, UWORD Yend)
     if (cachedY1 == Ystart && cachedY2 == Yend) return;
     
     OLED_WriteReg(0x75);  // REG_SET_ROW
-    OLED_WriteData(static_cast<UBYTE>(RamRow(Ystart)));
-    OLED_WriteData(static_cast<UBYTE>(RamRow(Yend - 1)));
-    OLED_WriteReg(0x5C);  // REG_WRITE_DATA_ENABLE
+    if (DisplayTraits::kSendCoordinatsAsAddress) {
+        OLED_WriteReg(static_cast<UBYTE>(RamRow(Ystart)));
+        OLED_WriteReg(static_cast<UBYTE>(RamRow(Yend - 1)));
+    } else {
+        OLED_WriteData(static_cast<UBYTE>(RamRow(Ystart)));
+        OLED_WriteData(static_cast<UBYTE>(RamRow(Yend - 1)));
+    }
+
     cachedY1 = Ystart;
     cachedY2 = Yend;
 }
@@ -137,6 +147,7 @@ static void OLED_SetWindow(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend)
 
     OLED_SetColumn(Xstart, Xend);
     OLED_SetROW(Ystart, Yend);
+    OLED_WriteReg(0x5C);  // REG_WRITE_DATA_ENABLE
 }
 
 /********************************************************************************
@@ -190,13 +201,13 @@ void OLED_Clear_DMA(ImageData *Imagedata)
     while (!dmaReady) {
         System::Delay(1); 
     }
-
+    dmaReady = false;
     OLED_SetWindow(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
     pin_dc.Write(true);
     
     SCB_CleanDCache_by_Addr((uint32_t*)Imagedata->data, Imagedata->size);
     spi_display.DmaTransmit((UBYTE*)Imagedata->data, Imagedata->size, NULL, OLED_Dma_Ready, NULL);
-    dmaReady = false;
+    
 }
 
 void OLED_Transmit_DMA(ImageData *Imagedata)
@@ -204,14 +215,13 @@ void OLED_Transmit_DMA(ImageData *Imagedata)
     while (!dmaReady) {
         System::Delay(1); 
     }
-
+    dmaReady = false;
     OLED_SetWindow(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
     pin_dc.Write(true);
     
     uint32_t dmaSize = BytesForPart(0, DISPLAY_WIDTH, 0, DISPLAY_HEIGHT); 
     SCB_CleanDCache_by_Addr((uint32_t*)Imagedata->data, dmaSize); 
     spi_display.DmaTransmit((UBYTE*)Imagedata->data, dmaSize, NULL, OLED_Dma_Ready, NULL);
-    dmaReady = false;
 }
 
 void OLED_Transmit_DMA_Part(ImageData *Imagedata, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend)
@@ -219,11 +229,12 @@ void OLED_Transmit_DMA_Part(ImageData *Imagedata, UWORD Xstart, UWORD Ystart, UW
     while (!dmaReady) {
         System::Delay(1); 
     }
+        dmaReady = false;
         OLED_SetWindow(Xstart, Ystart, Xend, Yend);
         pin_dc.Write(true);
         
         uint32_t dmaSize = BytesForPart(Xstart, Xend, Ystart, Yend); 
         SCB_CleanDCache_by_Addr((uint32_t*)Imagedata->data, dmaSize);    
         spi_display.DmaTransmit((UBYTE*)Imagedata->data, dmaSize, NULL, OLED_Dma_Ready, NULL);
-        dmaReady = false;
+        
 }

@@ -27,8 +27,8 @@ void Paint_NewImage(UBYTE *image, UWORD Width, UWORD Height, UWORD Rotate, UWORD
     Paint.Color = Color;    
     Paint.Scale = 16;
     
-    Paint.WidthByte = BytesPerRow();
-    Paint.HeightByte = Height;    
+    Paint.WidthByte = RamColumn(Width);
+    Paint.HeightByte = RamRow(Height);    
 //    printf("WidthByte = %d, HeightByte = %d\r\n", Paint.WidthByte, Paint.HeightByte);
 //    printf(" EPD_WIDTH / 8 = %d\r\n",  122 / 8);
    
@@ -50,7 +50,7 @@ function: Select Image
 void Paint_SelectImage(UBYTE *image)
 {
     Paint.Image = image;
-    // Paint_SetScale(16);
+    Paint_SetScale(16);
 }
 
 /******************************************************************************
@@ -104,7 +104,7 @@ function: Draw Pixels
 ******************************************************************************/
 inline void WritePixelLinear(uint16_t x, uint16_t y, uint8_t color)
 {
-    const uint16_t idx   = y * BytesPerRow() + x / DisplayTraits::kPixelsPerByte;
+    const uint16_t idx   = y * Paint.WidthByte + x / DisplayTraits::kPixelsPerByte;
     uint8_t value        = Paint.Image[idx];
     const bool   low     = (x & 0x1) != 0;
     const uint8_t shade  = color & 0x0F;
@@ -117,7 +117,7 @@ inline void WritePixelLinear(uint16_t x, uint16_t y, uint8_t color)
 inline void WritePixelReversed(uint16_t x, uint16_t y, uint8_t color)
 {
     const uint16_t block = x >> 2;
-    const uint16_t base  = y * BytesPerRow() + block * DisplayTraits::kBytesPerRamColumn;
+    const uint16_t base  = y * Paint.WidthByte + block * DisplayTraits::kBytesPerRamColumn;
     const uint8_t  off   = x & 0x03;
     const uint16_t idx   = base + ((off < 2) ? 1 : 0);
     uint8_t value        = Paint.Image[idx];

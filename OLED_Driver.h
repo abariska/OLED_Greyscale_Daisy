@@ -24,12 +24,13 @@ extern GPIO pin_dc;
 extern GPIO pin_reset;
 
 struct DisplayTraits1327 {
-    static constexpr uint8_t kPixelsPerRamColumn = 1;
-    static constexpr uint8_t kPixelsPerRamRow    = 2;
+    static constexpr uint8_t kPixelsPerRamColumn = 2;
+    static constexpr uint8_t kPixelsPerRamRow    = 1;
     static constexpr uint8_t kColumnOffset       = 0;
     static constexpr uint8_t kBytesPerRamColumn  = 1;
     static constexpr uint8_t kPixelsPerByte      = 2;
     static constexpr bool kReversedNibbles      = false;
+    static constexpr bool kSendCoordinatsAsAddress = true;
 };
 
 struct DisplayTraits1363 {
@@ -39,6 +40,7 @@ struct DisplayTraits1363 {
     static constexpr uint8_t kBytesPerRamColumn  = 2;
     static constexpr uint8_t kPixelsPerByte      = 2;
     static constexpr bool kReversedNibbles      = true;
+    static constexpr bool kSendCoordinatsAsAddress = false;
 };
 
 #if DISPLAY_CONTROLLER == SSD1327
@@ -59,6 +61,7 @@ struct ImageData
 
 void OLED_Init(void);
 void OLED_Clear(void);
+void Delay_ms(unsigned long xms);
 void OLED_Transmit(const UBYTE *Image);
 void OLED_Transmit_Part(const UBYTE *Image, UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend);
 void OLED_Clear_DMA(ImageData *Imagedata);
@@ -68,13 +71,13 @@ void OLED_Transmit_DMA_Part(ImageData *Imagedata, UWORD Xstart, UWORD Ystart, UW
 
 inline constexpr uint8_t RamColumn(uint16_t x)
 {
-    return static_cast<uint8_t>(x / DisplayTraits::kPixelsPerRamColumn
-                                + DisplayTraits::kColumnOffset);
+    return x / DisplayTraits::kPixelsPerRamColumn
+                                + DisplayTraits::kColumnOffset;
 }
 
 inline constexpr uint8_t RamRow(uint16_t y)
 {
-    return static_cast<uint8_t>(y / DisplayTraits::kPixelsPerRamRow);
+    return y / DisplayTraits::kPixelsPerRamRow;
 }
 
 inline constexpr uint16_t BytesPerRow()

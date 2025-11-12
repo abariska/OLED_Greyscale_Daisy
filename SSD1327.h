@@ -13,12 +13,13 @@
 void OLED_WriteReg(UBYTE Reg);
 void OLED_WriteData(UBYTE Data);
 void OLED_Clear(void);
+void Delay_ms(unsigned long xms);
 
 /*******************************************************************************
 function:
         Common register initialization
 *******************************************************************************/
-static void OLED_InitReg(void)
+inline void OLED_InitReg(void)
 {
     OLED_WriteReg(0xae);//--turn off oled panel
 
@@ -70,8 +71,8 @@ static void OLED_InitReg(void)
     OLED_WriteReg(0xfd);
     OLED_WriteReg(0x12);
 
+    Delay_ms(1);
     OLED_WriteReg(0xaf);
-
 }
 
 // inline void OLED_SetROW(UBYTE Ystart, UBYTE Yend)
@@ -88,14 +89,5 @@ static void OLED_InitReg(void)
 //     OLED_WriteReg(Xend - 1);
 // }
 
-inline void OLED_WriteDataEnable()
-{
-    // SSD1327 doesn't require write enable command
-}
-
-inline void OLED_TurnOnDisplay()
-{
-    OLED_WriteReg(0xaf);
-}
 
 #endif
