@@ -27,8 +27,8 @@ void Paint_NewImage(UBYTE *image, UWORD Width, UWORD Height, UWORD Rotate, UWORD
     Paint.Color = Color;    
     Paint.Scale = 16;
     
-    Paint.WidthByte = RamColumn(Width);
-    Paint.HeightByte = RamRow(Height);    
+    Paint.WidthByte = BytesForWidth(Width);
+    Paint.HeightByte = Height;
 //    printf("WidthByte = %d, HeightByte = %d\r\n", Paint.WidthByte, Paint.HeightByte);
 //    printf(" EPD_WIDTH / 8 = %d\r\n",  122 / 8);
    
@@ -298,8 +298,8 @@ void Paint_DrawPoint(UWORD Xpoint, UWORD Ypoint, UWORD Color,
             }
         }
     } else {
-        for (XDir_Num = 0; XDir_Num <  Dot_Pixel; XDir_Num++) {
-            for (YDir_Num = 0; YDir_Num <  Dot_Pixel; YDir_Num++) {
+        for (XDir_Num = 0; XDir_Num <  Dot_Pixel - 1; XDir_Num++) {
+            for (YDir_Num = 0; YDir_Num <  Dot_Pixel - 1; YDir_Num++) {
                 Paint_SetPixel(Xpoint + XDir_Num - 1, Ypoint + YDir_Num - 1, Color);
             }
         }
