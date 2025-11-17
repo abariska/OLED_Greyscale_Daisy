@@ -141,17 +141,18 @@ void Paint_DrawRectangle(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWO
 void Paint_DrawCircle(UWORD X_Center, UWORD Y_Center, UWORD Radius, UWORD Color, DOT_PIXEL Line_width, DRAW_FILL Draw_Fill);
 
 //Display string
-void Paint_DrawChar(UWORD Xstart, UWORD Ystart, const char Acsii_Char, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
-void Paint_DrawString_EN(UWORD Xstart, UWORD Ystart, const char * pString, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
-void Paint_DrawNum(UWORD Xpoint, UWORD Ypoint, const char * Number,  sFONT* Font, UWORD Digit,UWORD Color_Foreground, UWORD Color_Background);
-void Paint_DrawTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT* Font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawChar(UWORD Xstart, UWORD Ystart, const char ch, const tFont* font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawString_EN(UWORD Xstart, UWORD Ystart, const char * pString, const tFont* font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawNum(UWORD Xpoint, UWORD Ypoint, const char * Number,  const tFont* font, UWORD Digit,UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, const tFont* font, UWORD Color_Foreground, UWORD Color_Background);
 
 //pic
-void Paint_DrawBitMap(const unsigned char* image_buffer);
+void Paint_DrawBitMap(const unsigned char* image_buffer, bool custom_color = false, UBYTE color = 0xFF);
 //void Paint_DrawBitMap_Half(const unsigned char* image_buffer, UBYTE Region);
 //void Paint_DrawBitMap_OneQuarter(const unsigned char* image_buffer, UBYTE Region);
 //void Paint_DrawBitMap_OneEighth(const unsigned char* image_buffer, UBYTE Region);
-void Paint_DrawBitMapBlock(const unsigned char* image_buffer, UBYTE image_width, UBYTE image_height, UBYTE xStart = 0, UBYTE yStart = 0);
-void Paint_TextCentered(const char* text, UWORD x1, UWORD x2, UWORD y, sFONT font, UWORD text_color, UWORD background_color);
-void Paint_NumCentered(int param, UWORD x1, UWORD x2, UWORD y, UBYTE Digit, sFONT font, UWORD text_color, UWORD background_color);
+void Paint_DrawBitMapBlock(const unsigned char* image_buffer, UBYTE image_width, UBYTE image_height, UBYTE xStart, UBYTE yStart, bool custom_color = false, UBYTE color = 0xFF);
+void Paint_TextCentered(const char* text, UWORD x1, UWORD x2, UWORD y, const tFont* font, UWORD text_color, UWORD background_color);
+void Paint_NumCentered(int param, UWORD x1, UWORD x2, UWORD y, UBYTE Digit, const tFont* font, UWORD text_color, UWORD background_color);
+void Paint_BitMapCentered(const unsigned char* image_buffer, UBYTE image_width, UBYTE image_height, UBYTE xStart, UBYTE xEnd, UBYTE yStart, bool custom_color = false, UWORD color = 0xFF);
 #endif

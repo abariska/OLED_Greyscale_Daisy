@@ -29,6 +29,7 @@ struct DisplayTraits1327 {
     static constexpr uint8_t kColumnOffset       = 0;
     static constexpr uint8_t kBytesPerRamColumn  = 1;
     static constexpr uint8_t kPixelsPerByte      = 2;
+    static constexpr uint8_t kColorBits          = 4;
     static constexpr bool kReversedNibbles      = false;
     static constexpr bool kSendCoordinatsAsAddress = true;
 };
@@ -39,6 +40,7 @@ struct DisplayTraits1363 {
     static constexpr uint8_t kColumnOffset       = 8;
     static constexpr uint8_t kBytesPerRamColumn  = 2;
     static constexpr uint8_t kPixelsPerByte      = 2;
+    static constexpr uint8_t kColorBits          = 4;
     static constexpr bool kReversedNibbles      = true;
     static constexpr bool kSendCoordinatsAsAddress = false;
 };

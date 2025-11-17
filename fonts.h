@@ -36,8 +36,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __FONTS_H
-#define __FONTS_H
+#ifndef __MYFONTS_H
+#define __MYFONTS_H
 
 
 /*最大字体微软雅黑24 (32x41) */
@@ -52,36 +52,40 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
 
-//ASCII
-typedef struct _tFont
-{    
-  const uint8_t *table;
-  uint16_t Width;
-  uint16_t Height;
+typedef struct {
+  const uint16_t *data;
+  uint16_t width;
+  uint16_t height;
+  uint8_t dataSize;
+  } tImage;
+
+typedef struct {
+  long int code;
+  const tImage *image;
+  } tChar;
   
-} sFONT;
+typedef struct {
+  int length;
+  const tChar *chars;
+  } tFont;
 
+extern const tFont Font8Bold;
+extern const tFont Font12Bold;
+extern const tFont Font16Bold;
+extern const tFont Font20Bold;
+extern const tFont Font24Bold;
+extern const tFont Regular_8;
+extern const tFont Regular_12;
+extern const tFont Regular_16;
+extern const tFont Regular_20;
+extern const tFont Regular_24;
 
-typedef struct
-{    
-  uint16_t size;
-  uint16_t ASCII_Width;
-  uint16_t Width;
-  uint16_t Height;
-  
-}cFONT;
-
-extern sFONT Font24;
-extern sFONT Font20;
-extern sFONT Font16;
-extern sFONT Font12;
-extern sFONT Font8;
 
 #ifdef __cplusplus
 }
 #endif
   
-#endif /* __FONTS_H */
+#endif /* __MYFONTS_H */
  
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
