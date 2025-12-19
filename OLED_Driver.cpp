@@ -65,12 +65,10 @@ function:
 *******************************************************************************/
 void OLED_Reset(void)
 {
-    pin_reset.Write(true);
-    Delay_ms(50);
     pin_reset.Write(false);
     Delay_ms(50);
     pin_reset.Write(true);
-    Delay_ms(10);
+    Delay_ms(50);
 }
 
 /*******************************************************************************
@@ -96,7 +94,6 @@ Initialization
 void OLED_Init(void)
 {
     SPI_Init();
-    // Hardware reset
     OLED_Reset();
 
     OLED_InitReg();

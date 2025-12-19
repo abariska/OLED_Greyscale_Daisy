@@ -160,6 +160,8 @@ inline void OLED_InitReg(void)
     OLED_WriteReg(0xA6);  // REG_DISPLAY_NORMAL
     
     Delay_ms(1);
+
+    OLED_Clear();
     
     // 19. Display ON
     OLED_WriteReg(0xAF);  // REG_DISPLAY_ON
