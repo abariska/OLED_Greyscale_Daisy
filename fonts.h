@@ -79,7 +79,26 @@ extern const tFont Regular_12;
 extern const tFont Regular_16;
 extern const tFont Regular_20;
 extern const tFont Regular_24;
-
+extern const tFont Bohnshcrift_B16;
+extern const tFont Calibri_B16;
+extern const tFont Roboto_B_12;
+extern const tFont Roboto_B_14;
+extern const tFont Roboto_B_16;
+extern const tFont Roboto_B_18;
+extern const tFont Roboto_B_20;
+extern const tFont Roboto_B_24;
+extern const tFont Roboto_L_12;
+extern const tFont Roboto_L_14;
+extern const tFont Roboto_L_16;
+extern const tFont Roboto_L_18;
+extern const tFont Roboto_L_20;
+extern const tFont Roboto_L_24;
+extern const tFont Roboto_M_12;
+extern const tFont Roboto_M_14;
+extern const tFont Roboto_M_16;
+extern const tFont Roboto_M_18;
+extern const tFont Roboto_M_20;
+extern const tFont Roboto_M_24;
 
 #ifdef __cplusplus
 }
